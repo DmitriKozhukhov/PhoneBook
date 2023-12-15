@@ -109,7 +109,7 @@ def copy_to_file(file_name):
             continue
     lst = [res[str_number - 2].get('Имя'), res[str_number - 2].get('Фамилия'), res[str_number - 2].get('Телефон')]
     write_file(new_file, lst)
-    print(f"Запись успешно скопирована в файл {file_name}")
+    print(f"Запись успешно скопирована в файл {new_file}")
 
 
 def main():
