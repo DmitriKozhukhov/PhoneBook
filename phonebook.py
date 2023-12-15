@@ -86,6 +86,29 @@ def write_file(file_name, lst):
         f_writer = DictWriter(data, fieldnames=['Имя', 'Фамилия', 'Телефон'])
         f_writer.writeheader()
         f_writer.writerows(res)
+
+
+def copy_to_file(file_name):
+    with open(file_name, 'r') as file:
+        line_count = sum(1 for line in file)
+    res = read_file(file_name)
+
+    is_valid_string = False
+    new_file = input("Введите имя нового файла: ")
+    if not exists(new_file):
+        create_file(new_file)
+    while not is_valid_string:
+        try:
+            str_number = int(input(f"Введите номер копируемой строки(от 2 до {line_count}): "))
+            if str_number > line_count or str_number < 2:
+                raise StringNumberError('Невалидный номер строки')
+            else:
+                is_valid_string = True
+        except StringNumberError as err:
+            print(err)
+            continue
+    lst = [res[str_number - 2].get('Имя'), res[str_number - 2].get('Фамилия'), res[str_number - 2].get('Телефон')]
+    write_file(new_file, lst)
     print(f"Запись успешно скопирована в файл {file_name}")
 
 
@@ -103,6 +126,11 @@ def main():
                 print("Файл отсутствует. Создайте его")
                 continue
             print(*read_file(file_name))
+        elif command == 'c':
+            if not exists(file_name):
+                print("Исходный файл phone.csv отсутствует. Создайте его(команда w)")
+                continue
+            copy_to_file(file_name)
 
 
 file_name = 'phone.csv'
